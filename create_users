@@ -1,0 +1,10 @@
+#!/bin/bash
+input=$1
+output=$2
+
+while IFS= read -r user
+do
+  echo "CREATE USER $user WITH ENCRYPTED PASSWORD '$(makepasswd --maxchars 8 --minchars 8)';" >> $output
+  echo "CREATE DATABASE $user;" >> $output
+  echo "GRANT ALL PRIVILEGES ON DATABASE $user TO $user;" >> $output
+done < "$input"
